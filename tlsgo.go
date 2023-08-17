@@ -115,7 +115,7 @@ func main() {
 	duration, _ = strconv.Atoi(os.Args[2])
 	rps, _ = strconv.Atoi(os.Args[3])
 	proxylist = os.Args[4]
-	threads, _ = strconv.Atoi(os.Args[4])
+	threads, _ = strconv.Atoi(os.Args[5])
 
 	file, err := os.Open(proxylist)
 	if err != nil {
