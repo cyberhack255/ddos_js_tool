@@ -102,7 +102,7 @@ restart:
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	if len(os.Args) < 5 {
-		fmt.Println("target time rps proxy.txt threads")
+		fmt.Println("target time rps $PROXY threads")
 		return
 	}
 	var target string
