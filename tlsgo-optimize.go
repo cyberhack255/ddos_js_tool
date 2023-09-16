@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"math/rand"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -33,31 +32,8 @@ func http2(target string, clientPool *sync.Pool, quit chan struct{}) {
 	}
 
 	url, _ := url.Parse(proxy)
-	httpTransport := &http.Transport{
-		Proxy:             http.ProxyURL(url),
-		ForceAttemptHTTP2: true,
-		TLSClientConfig:   config,
-		Dial: (&net.Dialer{
-			Timeout:   30 * time.Second,
-			KeepAlive: 30 * time.Second,
-			DualStack: true,
-		}).Dial,
-		DialTLS: func(network, addr string) (net.Conn, error) {
-			dialer := &net.Dialer{
-				Timeout: 5 * time.Second,
-			}
-			conn, err := dialer.Dial(network, addr)
-			if err != nil {
-				return nil, err
-			}
-			tlsConn := tls.Client(conn, config)
-			err = tlsConn.Handshake()
-			if err != nil {
-				return nil, err
-			}
-			return tlsConn, nil
-		},
-	}
+	// Removed unused httpTransport
+	config.Proxy = http.ProxyURL(url)
 
 	req, _ := http.NewRequest("GET", target, nil)
 	userAgent := fmt.Sprintf(defaultUserAgent, rand.Intn(20)+95)
